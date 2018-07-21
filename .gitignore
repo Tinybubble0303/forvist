@@ -1,2 +1,10 @@
 /cache/
 /config/development/
+
+composer.lock
+
+/vendor/
+
+# IDE Files
+/nbproject/
+.idea/*
