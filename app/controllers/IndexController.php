@@ -7,7 +7,8 @@ class IndexController extends Controller
     public function indexAction()
     {
         $this->view->disable();
-        echo "Hello World!";
+        echo '<pre>';var_dump($this->session->getOptions());
+        echo "Hello, " . $this->session->get('userName') . "!";
 
     }
 
