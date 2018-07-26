@@ -8,6 +8,8 @@ use Phalcon\Mvc\Model\Metadata\Memory as MetaDataAdapter;
 //use Phalcon\Session\Adapter\Files as SessionAdapter;
 use Phalcon\Session\Adapter\Redis;
 use Phalcon\Flash\Direct as Flash;
+use Phalcon\Mvc\Dispatcher;
+use Phalcon\Events\Manager as EventsManager;
 
 /**
  * Shared configuration service
@@ -116,4 +118,25 @@ $di->setShared('session', function () {
     $session->start();
 
     return $session;
+});
+
+/**
+ * The MVC dispatcher
+ */
+$di->set('dispatcher', function () {
+    $eventsManager = new EventsManager();
+    $eventsManager->attach(
+        'dispatch:beforeExecuteRoute',
+        new SecurityPlugin()
+    );
+
+    $eventsManager->attach(
+        'dispatch:beforeException',
+        new NotFoundPlugin()
+    );
+
+    $dispatcher = new Dispatcher();
+    $dispatcher->setEventsManager($eventsManager);
+
+    return $dispatcher;
 });
