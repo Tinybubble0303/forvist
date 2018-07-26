@@ -108,11 +108,11 @@ $di->set('flash', function () {
 $di->setShared('session', function () {
 //    $session = new SessionAdapter();
     $session = new Redis([
-        'host'      => 'localhost',
+        'host'      => '127.0.0.1',
         'port'      => 6379,
         'lifetime'  => 7200
     ]);
-    $session->setName('firelang_session_mes');
+    $session->setName('firelang_mes_session');
     $session->start();
 
     return $session;
