@@ -7,10 +7,6 @@ use Phalcon\Mvc\Dispatcher;
 
 class SecurityPlugin extends Plugin
 {
-    private static function getNoSecurityRoutes()
-    {
-        return ['session:index', 'session:start'];
-    }
 
     public function beforeExecuteRoute(Event $event, Dispatcher $dispatcher)
     {
@@ -36,6 +32,16 @@ class SecurityPlugin extends Plugin
 
         //check user can access the url or not.
 
+    }
+
+    private static function getNoSecurityRoutes()
+    {
+        return ['session:index', 'session:start'];
+    }
+
+    private static function getNoAclRoutes()
+    {
+        return [];
     }
 
 }
