@@ -1,7 +1,5 @@
 <?php
 
-use Phalcon\Http\Response;
-
 class SessionController extends ControllerBase
 {
     public function indexAction()
@@ -28,10 +26,11 @@ class SessionController extends ControllerBase
         
         $userInfo = Users::findFirstByAccount($account);
         if ( ! $userInfo) {
-            die(json_encode([
+            $this->response->setJsonContent([
                 'code'  => 0,
                 'msg'   => '账号不存在或已删除'
-            ]));
+            ]);
+            return $this->response->send();
         }
         
 //         $this->_registerSession([]);
