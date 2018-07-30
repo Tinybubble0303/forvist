@@ -1,6 +1,8 @@
 <?php
 
 use Phalcon\Acl;
+use Phalcon\Acl\Role;
+use Phalcon\Acl\Adapter\Memory as AclList;
 use Phalcon\Events\Event;
 use Phalcon\Mvc\User\Plugin;
 use Phalcon\Mvc\Dispatcher;
@@ -19,6 +21,9 @@ class SecurityPlugin extends Plugin
         if (in_array($route, $noSecurityRoutes)) {
             //nothing to do
         } else {
+            $users = Users::findFirst(['user_id' => 1]);
+            var_dump($users);exit;
+
             $auth = $this->session->get('auth');
             if (is_null($auth) || ! $auth->mes_user_id) {
                 $dispatcher->forward([
@@ -28,9 +33,19 @@ class SecurityPlugin extends Plugin
 
                 return false;
             }
+
+
+            $users = Users::findFirst(['user_id' => 1]);
+            var_dump($users);exit;
         }
 
         //check user can access the url or not.
+        $noAclRoutes = self::getNoAclRoutes();
+        if (in_array($route, $noAclRoutes)) {
+            //nothing to do
+        } else {
+
+        }
 
     }
 
@@ -41,7 +56,22 @@ class SecurityPlugin extends Plugin
 
     private static function getNoAclRoutes()
     {
-        return [];
+        return ['session:index', 'session:start'];
+    }
+
+    private function getAcl()
+    {
+        $acl = new AclList();
+        $acl->setDefaultAction(Acl::DENY);
+
+        $roles = [
+            'users' => new Role('Users'),
+            'guest' => new Role('Guest'),
+        ];
+        foreach ($roles as $role) {
+            $acl->addRole($role);
+        }
+        
     }
 
 }
