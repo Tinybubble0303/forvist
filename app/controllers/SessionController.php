@@ -1,12 +1,13 @@
 <?php
 
+use Phalcon\Http\Response;
+
 class SessionController extends ControllerBase
 {
     public function indexAction()
     {
         $this->view->title = '登录';
         $this->view->renderJs = '/js/session/index.js';
-
     }
 
     private function _registerSession($user)
@@ -24,13 +25,20 @@ class SessionController extends ControllerBase
         $password = trim($this->request->getPost('password'));
         
         $this->view->disable();
-        echo $account,$password;exit;
         
-        $this->_registerSession([]);
-        return $this->dispatcher->forward([
-            'controller'    => 'index',
-            'action'        => 'index'
-        ]);
+        $userInfo = Users::findFirstByAccount($account);
+        if ( ! $userInfo) {
+            die(json_encode([
+                'code'  => 0,
+                'msg'   => '账号不存在或已删除'
+            ]));
+        }
+        
+//         $this->_registerSession([]);
+//         return $this->dispatcher->forward([
+//             'controller'    => 'index',
+//             'action'        => 'index'
+//         ]);
     }
 
 }
