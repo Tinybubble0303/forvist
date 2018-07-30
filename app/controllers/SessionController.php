@@ -4,6 +4,8 @@ class SessionController extends ControllerBase
 {
     public function indexAction()
     {
+        $this->view->title = '登录';
+        $this->view->renderJs = '/js/session/index.js';
 
     }
 
@@ -18,6 +20,12 @@ class SessionController extends ControllerBase
 
     public function startAction()
     {
+        $account = trim($this->request->getPost('account'));
+        $password = trim($this->request->getPost('password'));
+        
+        $this->view->disable();
+        echo $account,$password;exit;
+        
         $this->_registerSession([]);
         return $this->dispatcher->forward([
             'controller'    => 'index',

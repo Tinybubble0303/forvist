@@ -6,6 +6,7 @@ class IndexController extends ControllerBase
     public function indexAction()
     {
         $this->view->disable();
+        echo "a";
 //        var_dump($this->dispatcher->getParams());
 //        $this->view->disable();
 //        echo '<pre>';var_dump($this->session->getOptions());
